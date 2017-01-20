@@ -1,0 +1,29 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="plugin-icon">images/logo-80-transparent.png</param>
+        <param name="plugin-logo">images/logo-80-transparent.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="xunit"/>
+
+    <taskType key="xunitParser" name="xUnit.net Parser" class="com.wwwlicious.xunit.impl.xunitParserTask">
+        <description>Parses and displays xUnit.Net test results</description>
+        <resource type="download" name="icon" location="images/logo-80-transparent.png"/>
+    </taskType>
+
+    <!-- add our web resources -->
+    <web-resource key="xunit-resources" name="xunit Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+
+        <resource type="download" name="xunit.css" location="/css/xunit.css"/>
+        <resource type="download" name="xunit.js" location="/js/xunit.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>xunit</context>
+    </web-resource>
+
+</atlassian-plugin>
