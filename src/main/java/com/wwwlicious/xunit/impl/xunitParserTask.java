@@ -21,7 +21,7 @@ public class xunitParserTask implements TaskType {
 
         buildLogger.addBuildLogEntry("Parsing xunit test results");
         testCollationService.collateTestResults(taskContext, testFilePattern, new xUnitTestReportCollector());
-        buildLogger.addBuildLogEntry("Finished Parsing xunit test results");
+        buildLogger.addBuildLogEntry("Finished parsing xunit test results");
 
         return taskResultBuilder.checkTestFailures().build();
     }

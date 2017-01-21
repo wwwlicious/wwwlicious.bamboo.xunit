@@ -8,13 +8,15 @@ import com.atlassian.bamboo.resultsummary.tests.TestCaseResultErrorImpl;
 import com.atlassian.bamboo.resultsummary.tests.TestState;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.math.DoubleMath;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Set;
 
@@ -31,34 +33,27 @@ public class xUnitTestReportCollector implements TestReportCollector {
         Document doc = domFactory.newDocumentBuilder().parse(file);
 
         /*
-        v1 <test name="Catalogue.Shop.Service.Tests.AlertNotification.AlertNotificationServiceTests.Ctor_Throws_IfRequestGeneratorNull" type="Catalogue.Shop.Service.Tests.AlertNotification.AlertNotificationServiceTests" method="Ctor_Throws_IfRequestGeneratorNull" result="Pass" time="0.0078892" />
-        v2 <test name="Catalogue.Shop.Service.Tests.ProductServiceTests.CanInitializeProductService" type="Catalogue.Shop.Service.Tests.ProductServiceTests" method="CanInitializeProductService" time="0.029422" result="Pass" />
+        v1 <test name="TestClass.TestMethod" type="TestClass" method="TestMethod" result="Pass" time="0.0078892" />
+        v2 <test name="TestClass.TestMethod" type="TestClass" method="TestMethod" time="0.029422" result="Pass" />
          */
         NodeList tests = doc.getElementsByTagName("test");
         for (int i = 0; i < tests.getLength(); i++) {
-            Node test = tests.item(i);
-
-            NamedNodeMap attributes = test.getAttributes();
-            String suiteName = attributes.getNamedItem("type").getNodeValue();
-            String testName = attributes.getNamedItem("name").getNodeValue();
-            String durationString = attributes.getNamedItem("time").getNodeValue();
-            String status = attributes.getNamedItem("result").getNodeValue();
-
-            Long durationInMilliseconds = (Long.parseLong(durationString) * 1000);
-
-            TestResults testResults = new TestResults(suiteName, testName, durationInMilliseconds);
-
-            if ("Pass".equalsIgnoreCase(status)) {
-                testResults.setState(TestState.SUCCESS);
-                successfulTestResults.add(testResults);
-            } else if ("Ignore".equalsIgnoreCase(status)) {
-                testResults.setState(TestState.SKIPPED);
-                skippedTestResults.add(testResults);
-            } else if ("Fail".equalsIgnoreCase(status)) {
-                testResults.setState(TestState.FAILED);
-                xunitError xunitError = new xunitError(test);
-                testResults.addError(new TestCaseResultErrorImpl(xunitError.toString()));
-                failingTestResults.add(testResults);
+            try {
+                Element test = (Element) tests.item(i);
+                TestResults testResult = getTestResult(test);
+                switch (testResult.getState()) {
+                    case FAILED:
+                        failingTestResults.add(testResult);
+                        break;
+                    case SKIPPED:
+                        skippedTestResults.add(testResult);
+                        break;
+                    case SUCCESS:
+                        successfulTestResults.add(testResult);
+                        break;
+                }
+            } catch (Exception e) {
+                // log exception
             }
         }
 
@@ -72,5 +67,29 @@ public class xUnitTestReportCollector implements TestReportCollector {
     @NotNull
     public Set<String> getSupportedFileExtensions() {
         return Sets.newHashSet("result"); // this will collect all *.result files
+    }
+
+    private TestResults getTestResult(Element testNode) {
+        NamedNodeMap attributes = testNode.getAttributes();
+        String suiteName = attributes.getNamedItem("type").getNodeValue();
+        String testName = attributes.getNamedItem("name").getNodeValue();
+        String durationString = attributes.getNamedItem("time").getNodeValue();
+        String status = attributes.getNamedItem("result").getNodeValue();
+
+        long durationInMilliseconds = DoubleMath.roundToLong((Double.parseDouble(durationString) * 1000), RoundingMode.DOWN);
+
+        TestResults testResults = new TestResults(suiteName, testName, durationInMilliseconds);
+
+        if ("Pass".equalsIgnoreCase(status)) {
+            testResults.setState(TestState.SUCCESS);
+        } else if ("Skip".equalsIgnoreCase(status)) {
+            testResults.setState(TestState.SKIPPED);
+        } else if ("Fail".equalsIgnoreCase(status)) {
+            testResults.setState(TestState.FAILED);
+            xunitError xunitError = new xunitError(testNode);
+            testResults.addError(new TestCaseResultErrorImpl(xunitError.toString()));
+        }
+
+        return testResults;
     }
 }
