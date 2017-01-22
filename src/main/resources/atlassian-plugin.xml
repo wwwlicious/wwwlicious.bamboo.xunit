@@ -5,24 +5,26 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}"/>
         <param name="plugin-icon">images/logo-80-transparent.png</param>
         <param name="plugin-logo">images/logo-80-transparent.png</param>
+        <param name="plugin-banner">images/full-logo.jpg</param>
     </plugin-info>
 
     <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="xunit"/>
+    <resource type="i18n" name="Bamboo xUnit Plugin English" location="xunit"/>
 
     <taskType key="xunitParser" name="xUnit.net Parser" class="com.wwwlicious.xunit.impl.xunitParserTask">
+        <configuration class="com.wwwlicious.xunit.impl.xUnitParserConfigurator"/>
         <description>Parses and displays xUnit.Net test results</description>
+        <category name="test"/>
         <resource type="download" name="icon" location="images/logo-80-transparent.png"/>
+        <resource type="freemarker" name="edit" location="xUnitParserTaskEdit.ftl"/>
+        <resource type="freemarker" name="view" location="xUnitParserTaskView.ftl"/>
+        <help link="xunit.task.help.link" title="xunit.task.help.title"/>
     </taskType>
 
     <!-- add our web resources -->
     <web-resource key="xunit-resources" name="xunit Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-
-        <resource type="download" name="xunit.css" location="/css/xunit.css"/>
-        <resource type="download" name="xunit.js" location="/js/xunit.js"/>
         <resource type="download" name="images/" location="/images"/>
-
         <context>xunit</context>
     </web-resource>
 
