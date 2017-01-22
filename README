@@ -1,13 +1,17 @@
-You have successfully created an Atlassian Plugin!
+# Atlassian Bamboo xUnit.Net Parser Plugin
 
-Here are the SDK commands you'll use immediately:
+This plugin adds an xUnit Parser Task to Atlassian's Bamboo Server. The parser supports v1 and v2 xunit test result formats.
 
-* atlas-run   -- installs this plugin into the product and starts it on localhost
-* atlas-debug -- same as atlas-run, but allows a debugger to attach at port 5005
-* atlas-cli   -- after atlas-run or atlas-debug, opens a Maven command line window:
-                 - 'pi' reinstalls the plugin into the running product instance
-* atlas-help  -- prints description for all commands in the SDK
+## How to use
 
-Full documentation is always available at:
+Add the task your your build job.
 
-https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugin+SDK
+![Task](assets/xunittask_screen.png)
+
+Enter the path to the xunit result file/s. This can be a filepath, a directory path, or a wildcard path relative to the build root directory.
+
+![Config](assets/xunittask_config_screen.png)
+
+Run your build plan.
+
+
