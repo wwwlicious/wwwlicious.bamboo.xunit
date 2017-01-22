@@ -23,14 +23,14 @@ import java.util.Set;
 public class xUnitTestReportCollector implements TestReportCollector {
     @NotNull
     public TestCollectionResult collect(@NotNull java.io.File file) throws Exception {
-        TestCollectionResultBuilder builder = new TestCollectionResultBuilder();
+        final TestCollectionResultBuilder builder = new TestCollectionResultBuilder();
+        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        final Document doc = domFactory.newDocumentBuilder().parse(file);
 
         Collection<TestResults> successfulTestResults = Lists.newArrayList();
         Collection<TestResults> skippedTestResults = Lists.newArrayList();
         Collection<TestResults> failingTestResults = Lists.newArrayList();
 
-        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        Document doc = domFactory.newDocumentBuilder().parse(file);
 
         /*
         v1 <test name="TestClass.TestMethod" type="TestClass" method="TestMethod" result="Pass" time="0.0078892" />
@@ -39,7 +39,7 @@ public class xUnitTestReportCollector implements TestReportCollector {
         NodeList tests = doc.getElementsByTagName("test");
         for (int i = 0; i < tests.getLength(); i++) {
             try {
-                Element test = (Element) tests.item(i);
+                final Element test = (Element) tests.item(i);
                 TestResults testResult = getTestResult(test);
                 switch (testResult.getState()) {
                     case FAILED:
@@ -66,7 +66,7 @@ public class xUnitTestReportCollector implements TestReportCollector {
 
     @NotNull
     public Set<String> getSupportedFileExtensions() {
-        return Sets.newHashSet("result"); // this will collect all *.result files
+        return Sets.newHashSet("xml"); // this will collect all *.result files
     }
 
     private TestResults getTestResult(Element testNode) {

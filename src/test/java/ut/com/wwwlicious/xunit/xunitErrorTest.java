@@ -33,15 +33,15 @@ public class xunitErrorTest {
 
     @Test
     public void xunitErrorSetsMessageCorrectly() {
-        org.w3c.dom.Document document = loadXML("<test><failure><message>testMsg</message><stacktrace>test stack</stacktrace></failure></test>");
-        xunitError error = new xunitError((Element) document.getFirstChild());
+        org.w3c.dom.Document document = loadXML("<test><failure><message>testMsg</message><stack-trace>test stack</stack-trace></failure></test>");
+        xunitError error = new xunitError((Element) document.getElementsByTagName("test").item(0));
         assertEquals("message:\ttestMsg\r\nstacktrace:\ttest stack", error.toString());
     }
 
     @Test
     public void xunitErrorSetsMessageCorrectlyWithCData() {
-        org.w3c.dom.Document document = loadXML("<test><failure><message><![CDATA[testMsg]]></message><stacktrace><![CDATA[test stack]]></stacktrace></failure></test>");
-        xunitError error = new xunitError((Element) document.getFirstChild());
+        org.w3c.dom.Document document = loadXML("<test><failure><message><![CDATA[testMsg]]></message><stack-trace><![CDATA[test stack]]></stack-trace></failure></test>");
+        xunitError error = new xunitError((Element) document.getElementsByTagName("test").item(0));
         assertEquals("message:\ttestMsg\r\nstacktrace:\ttest stack", error.toString());
     }
 }
