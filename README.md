@@ -12,6 +12,7 @@ Enter the path to the xunit result file/s. This can be a filepath, a directory p
 
 ![Config](assets/xunittask_config_screen.PNG)
 
-Run your build plan.
+Run your build plan and view the results in the test tab.
 
+![Results](assets/xunittask_results_screen.PNG)
 
