@@ -6,11 +6,11 @@ This plugin adds an xUnit Parser Task to Atlassian's Bamboo Server. The parser s
 
 Add the task your your build job.
 
-![Task](assets/xunittask_screen.png)
+![Task](assets/xunittask_screen.PNG)
 
 Enter the path to the xunit result file/s. This can be a filepath, a directory path, or a wildcard path relative to the build root directory.
 
-![Config](assets/xunittask_config_screen.png)
+![Config](assets/xunittask_config_screen.PNG)
 
 Run your build plan.
 
