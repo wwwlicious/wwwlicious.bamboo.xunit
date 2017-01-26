@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wwwlicious.xunit</groupId>
     <artifactId>xunit</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <organization>
         <name>wwwlicious</name>
@@ -55,6 +55,12 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.jodah</groupId>
+            <artifactId>xsylum</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
@@ -169,6 +175,14 @@
                         </dependency>
                     </scannedDependencies>
                     <verbose>false</verbose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -11,7 +11,7 @@
     <!-- add our i18n resource -->
     <resource type="i18n" name="Bamboo xUnit Plugin English" location="xunit"/>
 
-    <taskType key="xunitParser" name="xUnit.net Parser" class="com.wwwlicious.xunit.impl.xunitParserTask">
+    <taskType key="xunitParser" name="xUnit.net Parser" class="com.wwwlicious.xunit.impl.xUnitParserTask">
         <configuration class="com.wwwlicious.xunit.impl.xUnitParserConfigurator"/>
         <description>Parses and displays xUnit.Net test results</description>
         <category name="test"/>

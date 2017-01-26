@@ -4,7 +4,7 @@ This plugin adds an xUnit Parser Task to Atlassian's Bamboo Server. The parser s
 
 ## How to use
 
-Add the task your your build job.
+Add the task to your build job.
 
 ![Task](assets/xunittask_screen.PNG)
 
