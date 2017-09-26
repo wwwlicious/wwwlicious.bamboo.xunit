@@ -68,7 +68,7 @@ public class xUnitParser {
                             // Get the test attributes from each test element
                             final String className = startElement.getAttributeByName(new QName("type")).getValue();
                             final String name = startElement.getAttributeByName(new QName("name")).getValue();
-                            final String methodName = name.substring(name.lastIndexOf(".") + 1);
+                            final String methodName = name.length() > className.length() ? name.substring(className.length() + 1) : startElement.getAttributeByName(new QName("method")).getValue();
                             final String duration = startElement.getAttributeByName(new QName("time")).getValue();
                             final String status = startElement.getAttributeByName(new QName("result")).getValue().toLowerCase();
                             final long durationInMilliseconds = (long) (Double.parseDouble(duration) * 1000);
